@@ -1,0 +1,13 @@
+{
+  "manifest_version": 3,
+  "name": "Request Tamper & Replay",
+  "version": "1.0.0",
+  "description": "Attach to an in-scope tab to log, pause, edit and replay its HTTP requests via the DevTools Protocol. For authorized security testing only.",
+  "permissions": ["debugger", "storage", "sidePanel", "scripting", "tabs"],
+  "optional_host_permissions": ["*://*/*"],
+  "background": { "service_worker": "background.js", "type": "module" },
+  "side_panel": { "default_path": "panel.html" },
+  "action": { "default_title": "Request Tamper & Replay (open side panel)" },
+  "options_page": "options.html",
+  "icons": { "128": "icon.png" }
+}
