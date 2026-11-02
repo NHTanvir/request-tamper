@@ -1,0 +1,35 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Request Tamper — test page</title>
+  <style>body{font:14px system-ui,sans-serif;max-width:640px;margin:30px auto;padding:0 16px}
+    button{font:inherit;padding:6px 12px;margin:4px 6px 4px 0}pre{background:#eee;padding:10px;white-space:pre-wrap;word-break:break-all}</style>
+</head>
+<body>
+  <h1>Request Tamper — test page</h1>
+  <p>Scope <code>localhost</code>, open the side panel, Attach, turn on Intercept, then click:</p>
+  <button id="post">fetch POST /api/echo (JSON body)</button>
+  <button id="get">XHR GET /api/data?user_id=1</button>
+  <form id="form" action="/api/form" method="post">
+    <input name="amount" value="100" /><button>form POST /api/form</button>
+  </form>
+  <pre id="out">responses appear here…</pre>
+  <script>
+    const out = document.getElementById('out');
+    const show = (t) => (out.textContent = typeof t === 'string' ? t : JSON.stringify(t, null, 2));
+    document.getElementById('post').onclick = () =>
+      fetch('/api/echo', { method: 'POST', headers: { 'Content-Type': 'application/json', 'X-Role': 'user' },
+        body: JSON.stringify({ item: 'book', price: 10 }) }).then((r) => r.json()).then(show).catch(show);
+    document.getElementById('get').onclick = () => {
+      const x = new XMLHttpRequest();
+      x.open('GET', '/api/data?user_id=1'); x.onload = () => show(x.responseText); x.send();
+    };
+    document.getElementById('form').onsubmit = (e) => {
+      e.preventDefault();
+      fetch('/api/form', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: 'amount=' + document.querySelector('[name=amount]').value }).then((r) => r.json()).then(show).catch(show);
+    };
+  </script>
+</body>
+</html>
