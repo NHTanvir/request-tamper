@@ -1,0 +1,24 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Request Tamper — Scope</title>
+  <style>
+    :root { color-scheme: light dark; font: 14px/1.5 system-ui, sans-serif; }
+    body { max-width: 560px; margin: 24px auto; padding: 0 16px; }
+    textarea { width: 100%; min-height: 140px; font: 13px monospace; box-sizing: border-box; }
+    button { font: inherit; padding: 6px 14px; border-radius: 6px; border: 1px solid #2d6cdf; background: #2d6cdf; color: #fff; cursor: pointer; }
+    .muted { opacity: .75; font-size: 13px; }
+    code { background: #8882; padding: 1px 4px; border-radius: 4px; }
+  </style>
+</head>
+<body>
+  <h1>Scope</h1>
+  <p class="muted">One host per line (e.g. <code>example.com</code>). Subdomains are included.
+    The extension attaches, logs and tampers <b>only</b> on these hosts. Empty = off everywhere.
+    Saving requests host access for each host (needed to replay requests).</p>
+  <textarea id="hosts" placeholder="example.com&#10;staging.example.org"></textarea>
+  <p><button id="save">Save scope</button> <span id="status" class="muted"></span></p>
+  <script type="module" src="options.js"></script>
+</body>
+</html>

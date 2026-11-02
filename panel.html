@@ -1,0 +1,65 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Request Tamper</title>
+  <style>
+    :root { color-scheme: light dark; font: 13px/1.4 system-ui, sans-serif; }
+    body { margin: 0; padding: 8px; }
+    h1 { font-size: 14px; margin: 0 0 6px; }
+    .warn { background: #fff3cd; color: #664d03; border: 1px solid #ffe69c; border-radius: 6px; padding: 6px 8px; font-size: 12px; margin-bottom: 8px; }
+    @media (prefers-color-scheme: dark) { .warn { background: #332701; color: #ffe69c; border-color: #665000; } }
+    .row { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; margin-bottom: 6px; }
+    button { font: inherit; padding: 3px 8px; border-radius: 6px; border: 1px solid #8884; background: #8882; cursor: pointer; }
+    button.primary { background: #2d6cdf; color: #fff; border-color: #2d6cdf; }
+    button.danger { background: #c0392b; color: #fff; border-color: #c0392b; }
+    .muted { opacity: .7; }
+    .flow { border: 1px solid #8883; border-radius: 6px; padding: 5px 7px; margin-bottom: 5px; cursor: pointer; }
+    .flow.paused { border-color: #e0a800; background: #e0a80022; }
+    .flow .m { font-weight: 600; }
+    .tag { display: inline-block; font-size: 10px; background: #8883; border-radius: 4px; padding: 0 4px; margin-left: 3px; }
+    .tag.destructive { background: #c0392b; color: #fff; }
+    pre { background: #8881; border-radius: 6px; padding: 6px; overflow: auto; max-height: 180px; white-space: pre-wrap; word-break: break-all; margin: 4px 0; }
+    textarea, input[type=text] { width: 100%; box-sizing: border-box; font: 12px monospace; }
+    textarea { min-height: 54px; }
+    .panel { border: 1px solid #8884; border-radius: 6px; padding: 7px; margin-bottom: 8px; }
+    details > summary { cursor: pointer; font-weight: 600; margin: 4px 0; }
+    .sec { font-size: 11px; text-transform: uppercase; opacity: .6; margin: 6px 0 2px; }
+  </style>
+</head>
+<body>
+  <h1>Request Tamper &amp; Replay</h1>
+  <div class="warn">
+    Attaching shows Chrome's <b>“is debugging this browser”</b> banner and only works on
+    <b>in-scope</b> tabs. Opening DevTools on the tab detaches this. Authorized testing only.
+  </div>
+
+  <div class="row">
+    <button id="attach" class="primary">Attach</button>
+    <button id="detach" hidden>Detach</button>
+    <span id="target" class="muted"></span>
+  </div>
+
+  <div class="panel">
+    <label><input type="checkbox" id="intercept" /> Intercept (pause matching requests)</label><br />
+    <label><input type="checkbox" id="skipStatic" checked /> Skip static assets</label><br />
+    <div class="sec">Pause rules — URL contains (one per line; empty = pause all non-static)</div>
+    <textarea id="rules" placeholder="/api/&#10;/graphql"></textarea>
+    <div class="row"><button id="saveRules">Save settings</button></div>
+  </div>
+
+  <div id="pending"></div>
+
+  <div class="row">
+    <b>Flows</b>
+    <span id="count" class="muted"></span>
+    <span style="flex:1"></span>
+    <button id="copy">Copy MD</button>
+    <button id="clear">Clear</button>
+  </div>
+  <div id="flows"></div>
+
+  <script type="module" src="panel.js"></script>
+</body>
+</html>
